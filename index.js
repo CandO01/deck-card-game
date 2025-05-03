@@ -29,8 +29,8 @@ async function deckCard(){
     computerScore.textContent = 0;
     myScore.textContent = 0;
     container.innerHTML = `
-                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px; transition: transform 0.5s ease; transform: rotateY(180deg);'>
-                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px; transition: transform 0.5s ease; transform: rotateY(180deg);'>
+                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px;'>
+                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px;'>
                       `
   }
   //This is the deck id
@@ -63,8 +63,9 @@ drawCard.addEventListener('click', async ()=>{
   playCard.forEach(element => {
     const div = document.createElement('div')
     div.classList.add('cards')
-    htmlCard = `<img src='${element.image}' style='width: 160px; height: 224px;'>`
+    htmlCard = `<img id= 'card-game' src='${element.image}' style='width: 160px; height: 224px;'>`
     div.innerHTML = htmlCard
+    
     container.appendChild(div)
     // document.body.appendChild(div)
   });
@@ -88,7 +89,8 @@ drawCard.addEventListener('click', async ()=>{
       }
     }
 
-  compareCards();     
+  compareCards();   
+  animateCardFlip(document.getElementById('card-game'));
 })
 
 //placeholder before the card is drawn
@@ -122,9 +124,16 @@ const compareCards = (card1, card2)=>{
   }
 
 }
-// const card1 = {value: 'QUEEN'}
-// const card2 = {value: 'QUEEN'}
-// console.log(compareCards(card1, card2));
+
+//for card flipping
+function animateCardFlip(cardElement) {
+    cardElement.classList.add("flip");
+
+    // remove class after animation ends so it can replay next time
+    setTimeout(() => {
+        cardElement.classList.remove("flip");
+    }, 500);
+}
 
 
 
