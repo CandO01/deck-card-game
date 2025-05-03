@@ -5,6 +5,8 @@ const winnerHeader = document.getElementById('winner-slot')
 const remainingCard = document.getElementById('newdeck-remaining')
 const computerScore = document.getElementById('computer-score')
 const myScore = document.getElementById('my-score')
+const cardSound = document.getElementById("card-sound");
+const winSound = document.getElementById("win-sound");
 
 //For score update
 let computerScores = 0;
@@ -28,6 +30,10 @@ async function deckCard(){
     drawCard.disabled = false
     computerScore.textContent = 0;
     myScore.textContent = 0;
+    container.innerHTML = `
+                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px;'>
+                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px;'>
+                      `
   }
   //This is the deck id
   deckId = data.deck_id
@@ -41,6 +47,7 @@ deckCardButton.addEventListener('click', deckCard)
 
 //button to draw cards and also using an async function to draw cards
 drawCard.addEventListener('click', async ()=>{
+  playCardSound(); // after drawing a card
   container.innerHTML = ''
   const url = `https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`
 
@@ -59,8 +66,9 @@ drawCard.addEventListener('click', async ()=>{
   playCard.forEach(element => {
     const div = document.createElement('div')
     div.classList.add('cards')
-    htmlCard = `<img src='${element.image}' style='width: 160px; height: 224px;'>`
+    htmlCard = `<img id= 'card-game' src='${element.image}' style='width: 160px; height: 224px;'>`
     div.innerHTML = htmlCard
+    
     container.appendChild(div)
     // document.body.appendChild(div)
   });
@@ -71,6 +79,8 @@ drawCard.addEventListener('click', async ()=>{
 
     //if the draw card is zero then the draw card button disabled
     if(data.remaining === 0){
+      playWinSound();  // when the game ends
+
       drawCard.disabled = true
       //determine the overall winner when the deck card is zero
       if(computerScores > myScores){
@@ -84,7 +94,8 @@ drawCard.addEventListener('click', async ()=>{
       }
     }
 
-  compareCards();     
+  compareCards();   
+  animateCardFlip(document.getElementById('card-game'));
 })
 
 //placeholder before the card is drawn
@@ -118,9 +129,29 @@ const compareCards = (card1, card2)=>{
   }
 
 }
-// const card1 = {value: 'QUEEN'}
-// const card2 = {value: 'QUEEN'}
-// console.log(compareCards(card1, card2));
+
+//for card flipping
+function animateCardFlip(cardElement) {
+    cardElement.classList.add("flip");
+
+    // remove class after animation ends so it can replay next time
+    setTimeout(() => {
+        cardElement.classList.remove("flip");
+    }, 500);
+}
+
+
+// winning sound and card shuffle
+
+function playCardSound() {
+    cardSound.currentTime = 0;
+    cardSound.play();
+}
+
+function playWinSound() {
+    winSound.currentTime = 0;
+    winSound.play();
+}
 
 
 
