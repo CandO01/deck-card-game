@@ -5,6 +5,8 @@ const winnerHeader = document.getElementById('winner-slot')
 const remainingCard = document.getElementById('newdeck-remaining')
 const computerScore = document.getElementById('computer-score')
 const myScore = document.getElementById('my-score')
+const cardSound = document.getElementById("card-sound");
+const winSound = document.getElementById("win-sound");
 
 //For score update
 let computerScores = 0;
@@ -45,6 +47,7 @@ deckCardButton.addEventListener('click', deckCard)
 
 //button to draw cards and also using an async function to draw cards
 drawCard.addEventListener('click', async ()=>{
+  playCardSound(); // after drawing a card
   container.innerHTML = ''
   const url = `https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`
 
@@ -76,6 +79,8 @@ drawCard.addEventListener('click', async ()=>{
 
     //if the draw card is zero then the draw card button disabled
     if(data.remaining === 0){
+      playWinSound();  // when the game ends
+
       drawCard.disabled = true
       //determine the overall winner when the deck card is zero
       if(computerScores > myScores){
@@ -133,6 +138,19 @@ function animateCardFlip(cardElement) {
     setTimeout(() => {
         cardElement.classList.remove("flip");
     }, 500);
+}
+
+
+// winning sound and card shuffle
+
+function playCardSound() {
+    cardSound.currentTime = 0;
+    cardSound.play();
+}
+
+function playWinSound() {
+    winSound.currentTime = 0;
+    winSound.play();
 }
 
 
