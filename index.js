@@ -28,6 +28,10 @@ async function deckCard(){
     drawCard.disabled = false
     computerScore.textContent = 0;
     myScore.textContent = 0;
+    container.innerHTML = `
+                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px; transition: transform 0.5s ease; transform: rotateY(180deg);'>
+                      <img src='./img/back.png' style='width: 160px; height: 224px; border: 2px solid black; border-radius: 4px; transition: transform 0.5s ease; transform: rotateY(180deg);'>
+                      `
   }
   //This is the deck id
   deckId = data.deck_id
